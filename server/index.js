@@ -6,23 +6,21 @@ const cors = require("cors");
 app.use(cors());
 
 const storage = multer.diskStorage({
-  destination: function (req, file, callback) {
+  destination: function (_, _, callback) {
     callback(null, __dirname + "/uploads");
   },
-  // Sets file(s) to be saved in uploads folder in same directory
-  filename: function (req, file, callback) {
+  filename: function (_, file, callback) {
     const originalname = file.originalname;
     const timestamp = Date.now();
     const filename = `${timestamp}_${originalname}`;
     callback(null, filename);
   },
-  // Sets saved filename(s) to be original filename(s)
 });
 const upload = multer({ storage: storage });
 
 app.post("/upload", upload.array("files"), (req, res) => {
   res.json({
-    message: "success",
+    message: "File uploaded successfully",
   });
 });
 
